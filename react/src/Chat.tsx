@@ -1,5 +1,7 @@
+import { observer } from "mobx-react-lite";
 import { useEffect, useState, type FC } from "react";
 import styled from "styled-components";
+
 import "./style/chat-style.css";
 
 export type MessageSender = "user" | "bot";
@@ -18,7 +20,7 @@ export interface ChatProps {
   awaitingResponse?: boolean;
 }
 
-export const Chat: FC<ChatProps> = ({
+export const Chat: FC<ChatProps> = observer(({
   botName = "Shadowbase AI Assistant",
   chatHistory = [],
   userMessages = [],
@@ -51,6 +53,6 @@ export const Chat: FC<ChatProps> = ({
       })}
     </div>
   );
-};
+});
 
 export default Chat;

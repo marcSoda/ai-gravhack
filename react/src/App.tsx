@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Chat, { type ChatMessage, type MessageSender } from "./Chat";
@@ -81,16 +82,7 @@ const StyledLink = styled.a`
 //   );
 // }
 
-function App() {
-  // const [message, setMessage] = useState("Loading...");
-
-  // useEffect(() => {
-  //   axios
-  //     .get("/api/hello/")
-  //     .then((res) => setMessage(res.data.message))
-  //     .catch((err) => setMessage("Error: " + err.message));
-  // }, []);
-
+const App = () => {
   const createNewMessage = (message: string, sender: MessageSender) => {
     return {
       timestamp: new Date().toLocaleString(),
@@ -112,15 +104,18 @@ function App() {
 
   const handleAskQuestion = (question: string) => {
     try {
+
+      console.log(question)
       setIsAsking(true);
       if (!appendMessage(question, "user")) {
         return;
       }
 
       //ask the question here
-      const response = "";
-
-      appendMessage(response, "bot");
+      axios
+        .get("/api/hello/")
+        .then((response) => appendMessage(response.data.message, "bot"))
+        .catch((err) => appendMessage(err.message, "bot"));
     } finally {
       setIsAsking(false);
     }
@@ -145,7 +140,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header>
-        <Logo>Shadowbase AI Assistant</Logo>
+        <Logo>{botName}</Logo>
         <Nav>
           <ul>
             <li>
@@ -172,6 +167,6 @@ function App() {
       </Footer>
     </>
   );
-}
+};
 
 export default App;
