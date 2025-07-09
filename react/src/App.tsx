@@ -104,6 +104,24 @@ const App = () => {
   const [userMessages, setUserMessages] = useState([] as string[]);
   const [chatHistory, setChatHistory] = useState([botWelcome] as ChatMessage[]);
 
+  const [followUpQuestion, setFollowUpQuestion] = useState("");
+
+  const appendMessage = (message: string, sender: MessageSender) => {
+    if (!message.trim()) return false;
+
+    setChatHistory((history) => [
+      ...history,
+      createNewMessage(message, sender),
+    ]);
+
+    if (sender === "bot") {
+      setBotMessages((history) => [...history, message, sender]);
+    } else {
+      setUserMessages((history) => [...history, message, sender]);
+    }
+    return true;
+  };
+
   const requestConversationId = () =>
     !conversationId
       ? axios
@@ -119,10 +137,6 @@ const App = () => {
       : Promise.resolve(conversationId);
 
   const handleAskQuestion = async (question: string) => {
-    try {
-  const [followUpQuestion, setFollowUpQuestion] = useState("");
-
-  const handleAskQuestion = (question: string) => {
     try {
       console.log(question);
       setIsAsking(true);
@@ -146,22 +160,6 @@ const App = () => {
     } finally {
       setIsAsking(false);
     }
-  };
-
-  const appendMessage = (message: string, sender: MessageSender) => {
-    if (!message.trim()) return false;
-
-    setChatHistory((history) => [
-      ...history,
-      createNewMessage(message, sender),
-    ]);
-
-    if (sender === "bot") {
-      setBotMessages((history) => [...history, message, sender]);
-    } else {
-      setUserMessages((history) => [...history, message, sender]);
-    }
-    return true;
   };
 
   return (
