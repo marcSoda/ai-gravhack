@@ -1,0 +1,105 @@
+import requests
+from datetime import datetime, timedelta
+from django.utils.timezone import now
+from functools import wraps
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from apps.api.models import BridgeAuth
+
+TIMEOUT=30
+BRIDGE_URL = "https://843960beb1cb.ngrok-free.app/ai/"
+AUTH_ROUTE = "authenticate/"
+AI_ROUTE = "azure_open_ai/v1/shadowbase/"
+START_CONVO_ROUTE = "start-conversation/"
+
+def bridge_ensure_auth(user):
+    bridge_auth = BridgeAuth.objects.filter(django_user=user).first()
+
+    if not bridge_auth or bridge_auth.expires_at <= now():
+        try:
+            response = requests.post(BRIDGE_URL + AUTH_ROUTE, timeout=TIMEOUT)
+            response.raise_for_status()
+            data = response.json()
+
+            access_token = data.get("accessToken")
+            expires_in = int(data.get("expiresIn", 0))
+
+            if not access_token or not expires_in:
+                return JsonResponse({"error": "Invalid response from auth server"}, status=502)
+
+            expires_at = now() + timedelta(seconds=expires_in)
+
+            BridgeAuth.objects.update_or_create(
+                django_user=user,
+                defaults={
+                    "access_token": access_token,
+                    "expires_at": expires_at
+                }
+            )
+
+        except (requests.RequestException, ValueError) as e:
+            return JsonResponse({"error": f"Authentication failed: {str(e)}"}, status=502)
+
+def bridge_start_convo(user):
+    bridge_auth = BridgeAuth.objects.get(django_user=user)
+
+    headers = {
+        "Authorization": f"Bearer {bridge_auth.access_token}",
+        "Accept": "application/json"
+    }
+
+    response = requests.get(BRIDGE_URL + AI_ROUTE + START_CONVO_ROUTE, headers=headers, timeout=TIMEOUT)
+    response.raise_for_status()
+
+    data = response.json()
+    convo_id = data.get("payload", {}).get("id")
+
+    if not convo_id:
+        raise Exception("convo_id missing from payload")
+
+    return convo_id
+
+def bridge_send_msg(user, convo_id, msg):
+    bridge_auth = BridgeAuth.objects.get(django_user=user)
+
+    headers = {
+        "Authorization": f"Bearer {bridge_auth.access_token}",
+        "Content-Type": "application/json"
+    }
+
+    url = f"{BRIDGE_URL}{AI_ROUTE}{convo_id}"
+    payload = {"contents": msg}
+
+    response = requests.post(url, headers=headers, json=payload, timeout=TIMEOUT)
+    response.raise_for_status()
+
+    data = response.json()
+    payload_data = data.get("payload", {})
+
+    return payload_data.get("contents")
+
+def bridge_get_convo_msgs(user, convo_id):
+    bridge_auth = BridgeAuth.objects.get(django_user=user)
+
+    headers = {
+        "Authorization": f"Bearer {bridge_auth.access_token}",
+        "Accept": "application/json"
+    }
+
+    url = f"{BRIDGE_URL}{AI_ROUTE}{convo_id}"
+    response = requests.get(url, headers=headers, timeout=TIMEOUT)
+    response.raise_for_status()
+
+    data = response.json()
+    raw_messages = data.get("payload", {}).get("messages", [])
+
+    simplified_messages = []
+    for msg in raw_messages:
+        msg_type = "answer" if str(msg.get("senderId", "")).startswith("agent:") else "question"
+        simplified_messages.append({
+            "id": msg.get("id"),
+            "contents": msg.get("contents"),
+            "type": msg_type
+        })
+
+    return simplified_messages
