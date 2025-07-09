@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Routes, Route, Link } from "react-router-dom";
+import { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Chat from "./Chat";
+import Chat, { type ChatMessage, type MessageSender } from "./Chat";
 import ChatInput from "./ChatInput";
 
 const GlobalStyle = createGlobalStyle`
@@ -93,6 +91,56 @@ function App() {
   //     .catch((err) => setMessage("Error: " + err.message));
   // }, []);
 
+  const createNewMessage = (message: string, sender: MessageSender) => {
+    return {
+      timestamp: new Date().toLocaleString(),
+      message,
+      sender,
+    } as ChatMessage;
+  };
+
+  const botName = "Shadowbase AI Assistant";
+  const botWelcomeMessage = `Hello! I am your ${botName}. How can I help you today?`;
+  const botWelcome = createNewMessage(botWelcomeMessage, "bot");
+
+  const [isAsking, setIsAsking] = useState(false);
+  const [botMessages, setBotMessages] = useState([
+    botWelcomeMessage,
+  ] as string[]);
+  const [userMessages, setUserMessages] = useState([] as string[]);
+  const [chatHistory, setChatHistory] = useState([botWelcome] as ChatMessage[]);
+
+  const handleAskQuestion = (question: string) => {
+    try {
+      setIsAsking(true);
+      if (!appendMessage(question, "user")) {
+        return;
+      }
+
+      //ask the question here
+      const response = "";
+
+      appendMessage(response, "bot");
+    } finally {
+      setIsAsking(false);
+    }
+  };
+
+  const appendMessage = (message: string, sender: MessageSender) => {
+    if (!message.trim()) return false;
+
+    setChatHistory((history) => [
+      ...history,
+      createNewMessage(message, sender),
+    ]);
+
+    if (sender === "bot") {
+      setBotMessages((history) => [...history, message, sender]);
+    } else {
+      setUserMessages((history) => [...history, message, sender]);
+    }
+  };
+
   return (
     <>
       <GlobalStyle />
@@ -110,10 +158,15 @@ function App() {
         </Nav>
       </Header>
       <Content>
-        <Chat />
-        <ChatInput />
+        <Chat
+          botName={botName}
+          chatHistory={chatHistory}
+          userMessages={userMessages}
+          botMessages={botMessages}
+          awaitingResponse={isAsking}
+        />
+        <ChatInput onAskQuestion={handleAskQuestion} />
       </Content>
-
       <Footer>
         &copy; {new Date().getFullYear()} Gravic, Inc. All rights reserved.
       </Footer>
