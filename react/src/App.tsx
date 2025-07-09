@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Chat, { type ChatMessage, type MessageSender } from "./Chat";
 import ChatInput from "./ChatInput";
+import { markdownToHtml } from "./MarkdownRenderer";
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
@@ -95,6 +96,7 @@ const App = () => {
   const botWelcomeMessage = `Hello! I am your ${botName}. How can I help you today?`;
   const botWelcome = createNewMessage(botWelcomeMessage, "bot");
 
+  const [conversationId, setConversationId] = useState("");
   const [isAsking, setIsAsking] = useState(false);
   const [botMessages, setBotMessages] = useState([
     botWelcomeMessage,
@@ -102,19 +104,39 @@ const App = () => {
   const [userMessages, setUserMessages] = useState([] as string[]);
   const [chatHistory, setChatHistory] = useState([botWelcome] as ChatMessage[]);
 
-  const handleAskQuestion = (question: string) => {
-    try {
+  const requestConversationId = () =>
+    !conversationId
+      ? axios
+          .get("/api/start-convo/")
+          .then((response) => {
+            setConversationId(response.data["convo_id"]);
+            return response.data.message as string;
+          })
+          .catch((err) => {
+            appendMessage(err.message, "bot");
+            return "";
+          })
+      : Promise.resolve(conversationId);
 
-      console.log(question)
+  const handleAskQuestion = async (question: string) => {
+    try {
       setIsAsking(true);
+
+      const id = await requestConversationId();
+
+      if (!id) return;
+
       if (!appendMessage(question, "user")) {
         return;
       }
 
-      //ask the question here
       axios
-        .get("/api/hello/")
-        .then((response) => appendMessage(response.data.message, "bot"))
+        .post(`/api/send-msg/${id}`, {
+          contents: question,
+        })
+        .then((response) =>
+          appendMessage(markdownToHtml(response.data["answer"]), "bot")
+        )
         .catch((err) => appendMessage(err.message, "bot"));
     } finally {
       setIsAsking(false);
@@ -134,6 +156,7 @@ const App = () => {
     } else {
       setUserMessages((history) => [...history, message, sender]);
     }
+    return true;
   };
 
   return (

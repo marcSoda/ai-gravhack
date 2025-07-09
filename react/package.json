@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/showdown": "^2.0.6",
     "axios": "^1.10.0",
     "mobx": "^6.13.7",
     "mobx-react-lite": "^4.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3",
+    "showdown": "^2.1.0",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
