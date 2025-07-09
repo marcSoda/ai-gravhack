@@ -1,0 +1,20 @@
+{
+    "venvPath": ".",
+    "venv": "venv",
+    "reportOptionalSubscript": false,
+    "reportGeneralTypeIssues": true,
+    "reportOptionalMemberAccess": true,
+    "reportOptionalOperand": true,
+    "reportOptionalIterable": true,
+    "pythonPlatform": "Linux",
+    "pythonVersion": "3.11",
+    "typeCheckingMode": "basic",
+    "exclude": [
+        "**/__pycache__",
+        "**/.git",
+        "**/venv"
+    ],
+    "include": [
+        "django"
+    ]
+}
