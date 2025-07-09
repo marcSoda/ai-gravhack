@@ -2,7 +2,6 @@ import { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Chat, { type ChatMessage, type MessageSender } from "./Chat";
 import ChatInput from "./ChatInput";
-import FollowUpQuestions from "./FollowUpQuestions";
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
@@ -165,13 +164,6 @@ function App() {
           userMessages={userMessages}
           botMessages={botMessages}
           awaitingResponse={isAsking}
-        />
-        <FollowUpQuestions
-          questions={[
-            "What are the advantages of using Shadowbase for data replication?",
-            "How does Shadowbase handle data consistency during replication?",
-            "Can Shadowbase be integrated with cloud-based systems?",
-          ]}
         />
         <ChatInput onAskQuestion={handleAskQuestion} />
       </Content>
