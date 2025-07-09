@@ -102,10 +102,11 @@ const App = () => {
   const [userMessages, setUserMessages] = useState([] as string[]);
   const [chatHistory, setChatHistory] = useState([botWelcome] as ChatMessage[]);
 
+  const [followUpQuestion, setFollowUpQuestion] = useState("");
+
   const handleAskQuestion = (question: string) => {
     try {
-
-      console.log(question)
+      console.log(question);
       setIsAsking(true);
       if (!appendMessage(question, "user")) {
         return;
@@ -159,8 +160,12 @@ const App = () => {
           userMessages={userMessages}
           botMessages={botMessages}
           awaitingResponse={isAsking}
+          onFollowupClick={setFollowUpQuestion}
         />
-        <ChatInput onAskQuestion={handleAskQuestion} />
+        <ChatInput
+          onAskQuestion={handleAskQuestion}
+          newValue={followUpQuestion}
+        />
       </Content>
       <Footer>
         &copy; {new Date().getFullYear()} Gravic, Inc. All rights reserved.

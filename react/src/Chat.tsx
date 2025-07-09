@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useState, type FC } from "react";
+import React, { useEffect, useState, type FC } from "react";
 import FollowUpQuestions from "./FollowUpQuestions";
 
 import "./style/chat-style.css";
@@ -18,6 +18,7 @@ export interface ChatProps {
   userMessages: string[];
   botMessages: string[];
   awaitingResponse?: boolean;
+  onFollowupClick?: (questionText: string) => void;
 }
 
 export const Chat: FC<ChatProps> = observer(
@@ -27,8 +28,13 @@ export const Chat: FC<ChatProps> = observer(
     userMessages = [],
     botMessages = [],
     awaitingResponse = false,
+    onFollowupClick,
   }) => {
     const [showFollowUps, setShowFollowUps] = useState(false);
+
+    useEffect(() => {
+      setShowFollowUps(false);
+    }, [chatHistory.length]);
 
     return (
       <div className="chat">
@@ -56,6 +62,7 @@ export const Chat: FC<ChatProps> = observer(
         })}
         {showFollowUps && (
           <FollowUpQuestions
+            onClick={onFollowupClick}
             questions={[
               "What are the advantages of using Shadowbase for data replication?",
               "How does Shadowbase handle data consistency during replication?",
