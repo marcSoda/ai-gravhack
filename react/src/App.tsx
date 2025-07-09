@@ -4,6 +4,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import Chat from "./Chat";
 import ChatInput from "./ChatInput";
+import FollowUpQuestions from "./FollowUpQuestions";
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
@@ -111,6 +112,13 @@ function App() {
       </Header>
       <Content>
         <Chat />
+        <FollowUpQuestions
+          questions={[
+            "What are the advantages of using Shadowbase for data replication?",
+            "How does Shadowbase handle data consistency during replication?",
+            "Can Shadowbase be integrated with cloud-based systems?",
+          ]}
+        />
         <ChatInput />
       </Content>
 
