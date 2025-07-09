@@ -55,11 +55,23 @@ interface InputGroupProps {
 export const InputGroup: FC<InputGroupProps> = ({
   inputProps,
   buttonProps,
-}) => (
-  <Wrapper>
-    <StyledInput type="text" {...inputProps}/>
-    <StyledButton {...buttonProps}>{buttonProps?.children}</StyledButton>
-  </Wrapper>
-);
+}) => {
+  const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (
+      e.code === "Enter" &&
+      buttonProps?.onClick &&
+      typeof buttonProps.onClick === "function"
+    ) {
+      (buttonProps.onClick as any)();
+    }
+  };
+
+  return (
+    <Wrapper>
+      <StyledInput type="text" onKeyDown={onKeyDown} {...inputProps} />
+      <StyledButton {...buttonProps}>{buttonProps?.children}</StyledButton>
+    </Wrapper>
+  );
+};
 
 export default InputGroup;
