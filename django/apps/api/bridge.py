@@ -7,10 +7,10 @@ from django.contrib.auth.decorators import login_required
 from apps.api.models import BridgeAuth
 
 TIMEOUT=30
-BRIDGE_URL = "https://843960beb1cb.ngrok-free.app/ai/"
-AUTH_ROUTE = "authenticate/"
-AI_ROUTE = "azure_open_ai/v1/shadowbase/"
-START_CONVO_ROUTE = "start-conversation/"
+BRIDGE_URL = "https://843960beb1cb.ngrok-free.app/ai"
+AUTH_ROUTE = "authenticate"
+AI_ROUTE = "azure_open_ai/v1/shadowbase"
+START_CONVO_ROUTE = "start-conversation"
 FOLLOW_UP_COUNT_QUERY_PARAM = "?followUpCount="
 
 def bridge_ensure_auth(user):
@@ -18,7 +18,8 @@ def bridge_ensure_auth(user):
 
     if not bridge_auth or bridge_auth.expires_at <= now():
         try:
-            response = requests.post(BRIDGE_URL + AUTH_ROUTE, timeout=TIMEOUT)
+            url = f"{BRIDGE_URL}/{AUTH_ROUTE}/"
+            response = requests.post(url, timeout=TIMEOUT)
             response.raise_for_status()
             data = response.json()
 
@@ -49,7 +50,8 @@ def bridge_start_convo(user):
         "Accept": "application/json"
     }
 
-    response = requests.get(BRIDGE_URL + AI_ROUTE + START_CONVO_ROUTE, headers=headers, timeout=TIMEOUT)
+    url = f"{BRIDGE_URL}/{AI_ROUTE}/{START_CONVO_ROUTE}/"
+    response = requests.get(url, headers=headers, timeout=TIMEOUT)
     response.raise_for_status()
 
     data = response.json()
@@ -67,11 +69,13 @@ def bridge_send_msg(user, convo_id, contents, follow_up_count):
         "Authorization": f"Bearer {bridge_auth.access_token}",
         "Content-Type": "application/json"
     }
-
-    url = f"{BRIDGE_URL}{AI_ROUTE}{convo_id}"
-    if follow_up_count is not None:
-        url += f"{FOLLOW_UP_COUNT_QUERY_PARAM}{follow_up_count}"
     payload = {"contents": contents}
+
+    url = f"{BRIDGE_URL}/{AI_ROUTE}/{convo_id}/"
+    if follow_up_count is not None:
+        url += f"?{FOLLOW_UP_COUNT_QUERY_PARAM}={follow_up_count}/"
+    else:
+        url += '/'
 
     response = requests.post(url, headers=headers, json=payload, timeout=TIMEOUT)
     response.raise_for_status()
@@ -92,7 +96,7 @@ def bridge_get_convo_msgs(user, convo_id):
         "Accept": "application/json"
     }
 
-    url = f"{BRIDGE_URL}{AI_ROUTE}{convo_id}"
+    url = f"{BRIDGE_URL}/{AI_ROUTE}/{convo_id}/"
     response = requests.get(url, headers=headers, timeout=TIMEOUT)
     response.raise_for_status()
 
