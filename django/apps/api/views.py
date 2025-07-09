@@ -30,7 +30,7 @@ def start_convo(req):
     try:
         user = get_user_model().objects.first()
         convo_id = bridge_start_convo(user)
-        return JsonResponse({"convo-id": convo_id})
+        return JsonResponse({"convo_id": convo_id})
     except requests.RequestException as e:
         return JsonResponse({"error": f"External request failed: {str(e)}"}, status=502)
     except Exception as e:
@@ -43,10 +43,14 @@ def send_msg(req, convo_id):
     try:
         user = get_user_model().objects.first()
         contents = req.data.get("contents")
+        follow_up_count = req.data.get("follow_up_count", None)
         if not contents:
             return JsonResponse({"error": "Missing 'contents' in request body"}, status=400)
-        answer = bridge_send_msg(user, convo_id, contents)
-        return JsonResponse({"answer": answer})
+        result = bridge_send_msg(user, convo_id, contents, follow_up_count)
+        return JsonResponse({
+            "answer": result["answer"],
+            "recommended_follow_ups": result["recommended_follow_ups"]
+        })
     except requests.RequestException as e:
         return JsonResponse({"error": f"External request failed: {str(e)}"}, status=502)
     except Exception as e:

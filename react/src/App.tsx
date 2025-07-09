@@ -120,6 +120,11 @@ const App = () => {
 
   const handleAskQuestion = async (question: string) => {
     try {
+  const [followUpQuestion, setFollowUpQuestion] = useState("");
+
+  const handleAskQuestion = (question: string) => {
+    try {
+      console.log(question);
       setIsAsking(true);
 
       const id = await requestConversationId();
@@ -182,8 +187,12 @@ const App = () => {
           userMessages={userMessages}
           botMessages={botMessages}
           awaitingResponse={isAsking}
+          onFollowupClick={setFollowUpQuestion}
         />
-        <ChatInput onAskQuestion={handleAskQuestion} />
+        <ChatInput
+          onAskQuestion={handleAskQuestion}
+          newValue={followUpQuestion}
+        />
       </Content>
       <Footer>
         &copy; {new Date().getFullYear()} Gravic, Inc. All rights reserved.
