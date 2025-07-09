@@ -1,20 +1,124 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Routes, Route, Link } from "react-router-dom";
+import styled, { createGlobalStyle } from "styled-components";
+import Chat from "./Chat";
+import ChatInput from "./ChatInput";
+
+const GlobalStyle = createGlobalStyle`
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;  
+    padding: 0;
+  }
+
+  body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    background-color: #242424;
+  }
+`;
+
+const Header = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1000;
+`;
+
+const Logo = styled.div`
+  font-size: 1.25rem;
+  font-weight: bold;
+`;
+
+const Nav = styled.nav`
+  ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+`;
+
+const Content = styled.main`
+  padding: 80px 20px 0px; /* offset for header */
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const Footer = styled.footer`
+  padding: 0px 20px;
+  color: #666;
+  margin-top: 20px;
+`;
+
+const StyledLink = styled.a`
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.6;
+    color: #fff;
+  }
+`;
+
+// function Home() {
+//   return <h2>Shadowbase AI Assistant</h2>;
+// }
+
+// function About() {
+//   return (
+//     <div>
+//       <h2>About Shadowbase AI Assistant</h2>
+//       <p>Powered by Alicia, Chris, Marc, Paden, and Rich!</p>
+//     </div>
+//   );
+// }
 
 function App() {
-  const [message, setMessage] = useState('Loading...')
+  // const [message, setMessage] = useState("Loading...");
 
-  useEffect(() => {
-    axios.get('/api/hello/')
-      .then(res => setMessage(res.data.message))
-      .catch(err => setMessage('Error: ' + err.message))
-  }, [])
+  // useEffect(() => {
+  //   axios
+  //     .get("/api/hello/")
+  //     .then((res) => setMessage(res.data.message))
+  //     .catch((err) => setMessage("Error: " + err.message));
+  // }, []);
 
   return (
-    <div>
-      <h1>{message}</h1>
-    </div>
-  )
+    <>
+      <GlobalStyle />
+      <Header>
+        <Logo>Shadowbase AI Assistant</Logo>
+        <Nav>
+          <ul>
+            <li>
+              <StyledLink href="#home">Home</StyledLink>
+            </li>
+            <li>
+              <StyledLink href="#about">Team</StyledLink>
+            </li>
+          </ul>
+        </Nav>
+      </Header>
+      <Content>
+        <Chat />
+        <ChatInput />
+      </Content>
+
+      <Footer>
+        &copy; {new Date().getFullYear()} Gravic, Inc. All rights reserved.
+      </Footer>
+    </>
+  );
 }
 
-export default App
+export default App;
