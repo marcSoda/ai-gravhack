@@ -2,18 +2,15 @@ import React from "react";
 import styled from "styled-components";
 
 const Row = styled.div`
+  align-self: self-end;
   display: table;
   margin-bottom: 8px;
 `;
 
 const Chip = styled.div`
-  float: left;
+  float: right;
   margin-top: 4px;
   margin-bottom: 4px;
-
-  overflow-x: hidden;
-  text-wrap-mode: nowrap;
-  text-overflow: ellipsis;
 
   border-style: solid;
   border-radius: 6px;
@@ -21,6 +18,8 @@ const Chip = styled.div`
   border-color: #2655ec;
 
   background-color: #000050;
+
+  font-size: 1.1rem;
 
   cursor: pointer;
 `;

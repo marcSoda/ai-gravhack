@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { useEffect, useState, type FC } from "react";
-import styled from "styled-components";
+import React, { useState, type FC } from "react";
+import FollowUpQuestions from "./FollowUpQuestions";
 
 import "./style/chat-style.css";
 
@@ -28,32 +28,51 @@ export const Chat: FC<ChatProps> = observer(
     botMessages = [],
     awaitingResponse = false,
   }) => {
+    const [showFollowUps, setShowFollowUps] = useState(false);
+
     return (
       <div className="chat">
-        {chatHistory.map((chatMessage) => {
+        {chatHistory.map((chatMessage, index) => {
+          const onClick =
+            index === chatHistory.length - 1
+              ? () => setShowFollowUps((showFollowUps) => !showFollowUps)
+              : undefined;
           if (chatMessage.sender === "user") {
             return (
-              <div className="from-user no-tail">{chatMessage.message}</div>
+              <div className="from-user no-tail" onClick={onClick}>
+                {chatMessage.message}
+              </div>
             );
           } else {
             return (
               <>
                 <p className="sender-name margin-b_none">{botName}</p>
-                <div className="from-bot no-tail">{chatMessage.message}</div>;
-                {awaitingResponse ? (
-                  <>
-                    <p className="sender-name margin-b_none">{botName}</p>
-                    <div className="typing-indicator">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </div>
-                  </>
-                ) : null}
+                <div className="from-bot no-tail" onClick={onClick}>
+                  {chatMessage.message}
+                </div>
               </>
             );
           }
         })}
+        {showFollowUps && (
+          <FollowUpQuestions
+            questions={[
+              "What are the advantages of using Shadowbase for data replication?",
+              "How does Shadowbase handle data consistency during replication?",
+              "Can Shadowbase be integrated with cloud-based systems?",
+            ]}
+          />
+        )}
+        {awaitingResponse && (
+          <>
+            <p className="sender-name margin-b_none">{botName}</p>
+            <div className="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </>
+        )}
       </div>
     );
   }
