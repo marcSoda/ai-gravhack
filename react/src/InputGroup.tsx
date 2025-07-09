@@ -57,7 +57,7 @@ export const InputGroup: FC<InputGroupProps> = ({
   buttonProps,
 }) => (
   <Wrapper>
-    <StyledInput type="text" {...inputProps} />
+    <StyledInput type="text" {...inputProps}/>
     <StyledButton {...buttonProps}>{buttonProps?.children}</StyledButton>
   </Wrapper>
 );

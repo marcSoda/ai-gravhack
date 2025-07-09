@@ -1,4 +1,4 @@
-import React, { useState ,type FC} from "react";
+import React, { useState, type FC } from "react";
 import InputGroup from "./InputGroup";
 
 export interface ChatInputProps {
@@ -16,7 +16,10 @@ export const ChatInput: FC<ChatInputProps> = ({ onAskQuestion }) => {
         onChange: (e) => setValue(e.target.value),
       }}
       buttonProps={{
-        onClick: () => onAskQuestion(value),
+        onClick: () => {
+          onAskQuestion(value);
+          setValue("");
+        },
         children: "Ask",
         disabled: value.trim() === "",
       }}
