@@ -11,6 +11,7 @@ BRIDGE_URL = "https://843960beb1cb.ngrok-free.app/ai/"
 AUTH_ROUTE = "authenticate/"
 AI_ROUTE = "azure_open_ai/v1/shadowbase/"
 START_CONVO_ROUTE = "start-conversation/"
+FOLLOW_UP_COUNT_QUERY_PARAM = "?followUpCount="
 
 def bridge_ensure_auth(user):
     bridge_auth = BridgeAuth.objects.filter(django_user=user).first()
@@ -59,7 +60,7 @@ def bridge_start_convo(user):
 
     return convo_id
 
-def bridge_send_msg(user, convo_id, msg):
+def bridge_send_msg(user, convo_id, contents, follow_up_count):
     bridge_auth = BridgeAuth.objects.get(django_user=user)
 
     headers = {
@@ -68,7 +69,9 @@ def bridge_send_msg(user, convo_id, msg):
     }
 
     url = f"{BRIDGE_URL}{AI_ROUTE}{convo_id}"
-    payload = {"contents": msg}
+    if follow_up_count is not None:
+        url += f"{FOLLOW_UP_COUNT_QUERY_PARAM}{follow_up_count}"
+    payload = {"contents": contents}
 
     response = requests.post(url, headers=headers, json=payload, timeout=TIMEOUT)
     response.raise_for_status()
@@ -76,7 +79,10 @@ def bridge_send_msg(user, convo_id, msg):
     data = response.json()
     payload_data = data.get("payload", {})
 
-    return payload_data.get("contents")
+    return {
+        "answer": payload_data.get("contents"),
+        "recommended_follow_ups": payload_data.get("recommendedFollowUps", [])
+    }
 
 def bridge_get_convo_msgs(user, convo_id):
     bridge_auth = BridgeAuth.objects.get(django_user=user)
