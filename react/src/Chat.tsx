@@ -20,39 +20,43 @@ export interface ChatProps {
   awaitingResponse?: boolean;
 }
 
-export const Chat: FC<ChatProps> = observer(({
-  botName = "Shadowbase AI Assistant",
-  chatHistory = [],
-  userMessages = [],
-  botMessages = [],
-  awaitingResponse = true,
-}) => {
-  return (
-    <div className="chat">
-      {chatHistory.map((chatMessage) => {
-        if (chatMessage.sender === "user") {
-          return <div className="from-user no-tail">{chatMessage.message}</div>;
-        } else {
-          return (
-            <>
-              <p className="sender-name margin-b_none">{botName}</p>
-              <div className="from-bot no-tail">{chatMessage.message}</div>;
-              {awaitingResponse ? (
-                <>
-                  <p className="sender-name margin-b_none">{botName}</p>
-                  <div className="typing-indicator">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </div>
-                </>
-              ) : null}
-            </>
-          );
-        }
-      })}
-    </div>
-  );
-});
+export const Chat: FC<ChatProps> = observer(
+  ({
+    botName = "Shadowbase AI Assistant",
+    chatHistory = [],
+    userMessages = [],
+    botMessages = [],
+    awaitingResponse = false,
+  }) => {
+    return (
+      <div className="chat">
+        {chatHistory.map((chatMessage) => {
+          if (chatMessage.sender === "user") {
+            return (
+              <div className="from-user no-tail">{chatMessage.message}</div>
+            );
+          } else {
+            return (
+              <>
+                <p className="sender-name margin-b_none">{botName}</p>
+                <div className="from-bot no-tail">{chatMessage.message}</div>;
+                {awaitingResponse ? (
+                  <>
+                    <p className="sender-name margin-b_none">{botName}</p>
+                    <div className="typing-indicator">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </>
+                ) : null}
+              </>
+            );
+          }
+        })}
+      </div>
+    );
+  }
+);
 
 export default Chat;
