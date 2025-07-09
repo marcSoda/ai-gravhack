@@ -1,31 +1,27 @@
-import React, { useState } from 'react'
-import InputGroup from './InputGroup'
+import React, { useState ,type FC} from "react";
+import InputGroup from "./InputGroup";
 
-export interface ChatInputProps{
-    
+export interface ChatInputProps {
+  onAskQuestion: (question: string) => void;
 }
-function ChatInput() {
-  const [value, setValue] = useState('')
 
-    const handleOnClick=()=>{
-
-  }
+export const ChatInput: FC<ChatInputProps> = ({ onAskQuestion }) => {
+  const [value, setValue] = useState("");
 
   return (
-      <InputGroup
-        inputProps={{
-          placeholder: 'Ask Question',
-          value,
-          onChange: e => setValue(e.target.value),
-        }}
-        buttonProps={{
-          onClick: handleOnClick,
-          children: "Ask",
-          disabled: value.trim() === '',
-        }}
-      />
+    <InputGroup
+      inputProps={{
+        placeholder: "Ask Question",
+        value,
+        onChange: (e) => setValue(e.target.value),
+      }}
+      buttonProps={{
+        onClick: () => onAskQuestion(value),
+        children: "Ask",
+        disabled: value.trim() === "",
+      }}
+    />
+  );
+};
 
-  )
-}
-
-export default ChatInput
+export default ChatInput;

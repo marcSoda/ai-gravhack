@@ -1,31 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FC } from "react";
 import styled from "styled-components";
 import HtmlRenderer from "./HtmlRenderer";
 import "./style/chat-style.css";
 
-interface ChatMessage {
+export type MessageSender = "user" | "bot";
+
+export interface ChatMessage {
   timestamp: string;
   message: string;
-  sender: "user" | "bot";
+  sender: MessageSender;
 }
 
-function Chat() {
-  const botName = "Shadowbase AI Assistant";
-  const botWelcomeMessage = `Hello! I am your ${botName}. How can I help you today?`;
+export interface ChatProps {
+  botName?: string;
+  chatHistory: ChatMessage[];
+  userMessages: string[];
+  botMessages: string[];
+  awaitingResponse?: boolean;
+}
 
-  const botWelcome = {
-    timestamp: Date.now().toString(),
-    message: botWelcomeMessage,
-    sender: "bot",
-  } as ChatMessage;
-
-  const [botMessages, setBotMessages] = useState([
-    botWelcomeMessage,
-  ] as string[]);
-  const [userMessages, setUserMessages] = useState([] as string[]);
-  const [chatHistory, setChatHistory] = useState([botWelcome] as ChatMessage[]);
-
-  const renderChat = (showReplyingAnimation: boolean) => {
+export const Chat: FC<ChatProps> = ({
+  botName = "Shadowbase AI Assistant",
+  chatHistory = [],
+  userMessages = [],
+  botMessages = [],
+  awaitingResponse = false,
+}) => {
+  const renderChat = () => {
     const messageCount = chatHistory.length;
 
     if (!messageCount) return "<></>";
@@ -47,7 +48,7 @@ function Chat() {
       }
     }
 
-    if (showReplyingAnimation) {
+    if (awaitingResponse) {
       content.push(createTag("p", "sender-name margin-b_none", botName));
       content.push(
         styleBotMessage(
@@ -75,7 +76,7 @@ function Chat() {
   const appendStyleClassNames = (baseClassName: string) =>
     `${baseClassName} no-tail`;
 
-  return <HtmlRenderer html={renderChat(false)} />;
-}
+  return <HtmlRenderer html={renderChat()} />;
+};
 
 export default Chat;
