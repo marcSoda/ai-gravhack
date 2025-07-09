@@ -1,0 +1,9 @@
+venv/
+*.xlsx
+*.csv
+*.zip
+*.pyc
+__pycache__/
+dotfiles/
+temp/
+django/static/
