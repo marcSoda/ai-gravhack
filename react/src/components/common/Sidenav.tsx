@@ -79,11 +79,11 @@ const Sidenav: React.FC = () => {
       <div className="flex flex-col justify-between h-full">
         <img
           src={paulUrl}
-          alt="The Wizard of Shad"
+          title="The Wizard of Shad"
           style={{
             maxWidth: "100%",
             height: "auto",
-            marginTop: 64,
+            marginTop: 80,
             opacity: isOpen ? 1 : 0,
           }}
         />

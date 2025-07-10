@@ -9,7 +9,7 @@ const Row = styled.div`
 
 const Chip = styled.div`
   float: right;
-  margin: 4px 0;
+  margin: 4px 0 4px 6px;
   border-style: solid;
   border-radius: 6px;
   border-width: 2px;
