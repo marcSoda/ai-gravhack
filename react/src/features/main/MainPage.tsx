@@ -1,65 +1,88 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "@/utils/axiosConfig";
 import { AxiosError } from "axios";
-import axios from '@/utils/axiosConfig'
-import { markdownToHtml } from "@/MarkdownRenderer";
 import Chat, { type ChatMessage, type MessageSender } from "@/Chat";
 import ChatInput from "@/ChatInput";
 import { toast } from "sonner";
+import { v4 as uuid } from "uuid";
+import showdown from "showdown";
+
+const newMsg = (text: string, sender: MessageSender): ChatMessage => ({
+  id: uuid(),                                 // react key
+  timestamp: new Date().toLocaleString(),
+  message: text,
+  sender,
+});
+
+const botName = "Shadowbase AI Assistant";
+const botWelcome = `Hello! I am your ${botName}. How can I help you today?`;
 
 export default function MainPage() {
-  const newMsg = (message: string, sender: MessageSender): ChatMessage => ({
-    timestamp: new Date().toLocaleString(),
-    message,
-    sender,
-  });
+  const [conversationId, setConversationId] = useState("");
+  const [awaiting, setAwaiting]             = useState(false);
+  const [chatHistory, setChatHistory]       = useState<ChatMessage[]>([]);
+  const [followup, setFollowup]             = useState("");
 
-  const botName               = "Shadowbase AI Assistant";
-  const welcome               = `Hello! I am your ${botName}. How can I help you today?`;
-  const [conversationId, setConversationId] = useState<string>("");
-  const [awaiting,        setAwaiting]      = useState(false);
-  const [chatHistory,     setChatHistory]   = useState<ChatMessage[]>([
-    newMsg(welcome, "bot"),
-  ]);
-  const [followup,        setFollowup]      = useState("");
+  useEffect(() => {
+    setChatHistory([newMsg(botWelcome, "bot")]);
+  }, []);
 
-  const append = (msg: string, sender: MessageSender) => {
-    if (!msg.trim()) return false;
-    setChatHistory((h) => [...h, newMsg(msg, sender)]);
-    return true;
+  const append = (text: string, sender: MessageSender) => {
+    if (!text.trim()) return;
+    setChatHistory((h) => [...h, newMsg(text, sender)]);
   };
 
-  const ensureConversationId = async () => {
+  const botError = (humanMsg: string) => {
+    const replies = [
+      "I’m feeling a bit off – could you try again later?",
+      "Hmmm … my brain is lagging. One more time?",
+      "Cleanup on aisle 5! Something went wrong.",
+    ];
+    append(humanMsg || replies[Math.floor(Math.random() * replies.length)], "bot");
+  };
+
+  const getConversationId = async () => {
     if (conversationId) return conversationId;
     try {
       const { data } = await axios.get("/api/start-convo/");
-      setConversationId(data["convo_id"]);
-      return data["convo_id"] as string;
+      setConversationId(data.convo_id);
+      return data.convo_id as string;
     } catch (err) {
-      console.log(err);
-      toast.error("Unable to start conversation");
+      botError("Could not start a conversation.");
       return "";
     }
   };
 
+  const markdownToHtml = (markdown: string) => {
+    const converter = new showdown.Converter();
+    return converter.makeHtml(markdown);
+  };
+
   const ask = async (question: string) => {
-    if (!append(question, "user")) return;
+    const q = question.trim();
+    if (!q) return;
+
+    if (q.toLowerCase() === "clear" || q.toLowerCase() === "clr") {
+      setChatHistory([newMsg(botWelcome, "bot")]);
+      setConversationId("");
+      return;
+    }
+
+    append(q, "user");
+    setAwaiting(true);
 
     try {
-      setAwaiting(true);
-      const id = await ensureConversationId();
+      const id = await getConversationId();
       if (!id) return;
 
-      const { data } = await axios.post(`/api/send-msg/${id}`, {
-        contents: question,
-      });
-
-      append(data["answer"], "bot");
+      const { data } = await axios.post(`/api/send-msg/${id}`, { contents: q });
+      append(markdownToHtml(data.answer), "bot");
     } catch (err) {
       const msg =
         err instanceof AxiosError
           ? err.response?.data?.error ?? err.message
-          : "Unknown error";
-      append(msg, "bot");
+          : "Unexpected error.";
+      botError(msg);
     } finally {
       setAwaiting(false);
     }
