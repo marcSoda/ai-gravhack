@@ -14,6 +14,7 @@ import useHideSidenavOnRoutes from "./hooks/useHideSidenavOnRoutes";
 
 function App() {
   const showNav = useHideSidenavOnRoutes(["/login"]);
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <AuthProvider>
@@ -22,10 +23,14 @@ function App() {
           {showNav && <TopNav />}
           <div className="flex flex-1 overflow-hidden">
             {showNav && <Sidenav />}
-            <div className="flex-1 overflow-auto">
+            <div
+              className={`flex-1 overflow-auto ${showNav ? "pl-16" : ""}`}
+            >
               <Routes>
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/logout" element={<Logout />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/team" element={<TeamPage />} />
                 <Route
                   path="*"
                   element={
