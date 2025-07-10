@@ -1,0 +1,48 @@
+services:
+  django:
+    container_name: django-${PROFILE}
+    build:
+      dockerfile: django/Dockerfile
+    environment:
+      - PYTHONPATH=/working/django
+      - PROFILE=${PROFILE}
+    volumes:
+      - ./django:/working
+    command: bash -c "/working/entrypoint django"
+    ports:
+      - "5000:5000"
+    profiles:
+      - dev
+      - prod
+  react:
+    container_name: react-${PROFILE}
+    build:
+      dockerfile: react/Dockerfile
+    environment:
+      - PROFILE=${PROFILE}
+    command: bash -c "/working/entrypoint"
+    volumes:
+      - ./react:/working
+    ports:
+      - "5173:5173"
+      # this is not used in prod, but it needs to be set otherwise I need to create another service altogether
+    depends_on:
+      - django
+    profiles:
+      - dev
+      - prod
+  nginx:
+    container_name: nginx
+    build:
+      dockerfile: nginx/Dockerfile
+    volumes:
+      - ./nginx:/working
+      - ./django/django/static:/static
+      - ./react/dist:/var/www/react_dist
+    ports:
+      - "80:80"
+    depends_on:
+      - react
+      - django
+    profiles:
+      - prod

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ $PROFILE == "prod" ]; then
+    echo "ENTRYPOINT: PROFILE: prod"
+    npm install
+    npm run build
+elif [ $PROFILE == "dev" ]; then
+    echo "ENTRYPOINT PROFILE: dev"
+    npm install
+    npm run dev
+else
+    echo "ENTRYPOINT ERROR: PROFILE NOT SET"
+fi
