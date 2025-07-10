@@ -25,10 +25,8 @@ function App() {
               <Routes>
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/logout" element={<Logout />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/team" element={<TeamPage />} />
                 <Route
-                  path="/"
+                  path="*"
                   element={
                     <ProtectedRoute>
                       <MainPage />

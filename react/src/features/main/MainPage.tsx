@@ -1,12 +1,15 @@
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 import showdown from "showdown";
 import { v4 as uuid } from "uuid";
 import axios from "../..//utils/axiosConfig";
+import AboutPage from "../../AboutPage";
 import Chat, { type ChatMessage, type MessageSender } from "../../Chat";
 import ChatInput from "../../ChatInput";
 import { Card, CardContent, CardFooter } from "../../components/ui/card";
 import { Separator } from "../../components/ui/separator";
+import TeamPage from "../../TeamPage";
 
 const newMsg = (text: string, sender: MessageSender): ChatMessage => ({
   id: uuid(), // react keys
@@ -93,29 +96,38 @@ export default function MainPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] bg-background text-foreground overflow-hidden">
-      <main className="flex-1 flex flex-col items-center px-4 pt-4 lg:pt-8 overflow-hidden min-h-0">
-        <Card className="w-full max-w-3xl flex flex-col flex-1 bg-card text-card-foreground shadow-lg border min-h-0">
-          <CardContent className="flex-1 flex flex-col pt-6 overflow-hidden min-h-0">
-            <Chat
-              botName={botName}
-              chatHistory={chatHistory}
-              awaitingResponse={awaiting}
-              followupOptions={followupOptions}
-              onFollowupClick={setFollowup}
-            />
-          </CardContent>
-          <Separator />
-          <CardFooter className="pt-4 pb-6">
-            <div className="w-full">
-              <ChatInput onAskQuestion={ask} newValue={followup} />
-            </div>
-          </CardFooter>
-        </Card>
-      </main>
-      <footer className="text-center text-xs py-4 text-muted-foreground shrink-0">
-        © {new Date().getFullYear()} Gravic, Inc. All rights reserved.
-      </footer>
-    </div>
+    <Routes>
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/team" element={<TeamPage />} />
+      <Route
+        path="/"
+        element={
+          <div className="flex flex-col h-[calc(100vh-4rem)] bg-background text-foreground overflow-hidden">
+            <main className="flex-1 flex flex-col items-center px-4 pt-4 lg:pt-8 overflow-hidden min-h-0">
+              <Card className="w-full max-w-3xl flex flex-col flex-1 bg-card text-card-foreground shadow-lg border min-h-0">
+                <CardContent className="flex-1 flex flex-col pt-6 overflow-hidden min-h-0">
+                  <Chat
+                    botName={botName}
+                    chatHistory={chatHistory}
+                    awaitingResponse={awaiting}
+                    followupOptions={followupOptions}
+                    onFollowupClick={setFollowup}
+                  />
+                </CardContent>
+                <Separator />
+                <CardFooter className="pt-4 pb-6">
+                  <div className="w-full">
+                    <ChatInput onAskQuestion={ask} newValue={followup} />
+                  </div>
+                </CardFooter>
+              </Card>
+            </main>
+            <footer className="text-center text-xs py-4 text-muted-foreground shrink-0">
+              © {new Date().getFullYear()} Gravic, Inc. All rights reserved.
+            </footer>
+          </div>
+        }
+      />
+    </Routes>
   );
 }
