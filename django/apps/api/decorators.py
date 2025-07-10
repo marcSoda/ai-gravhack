@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 
 def bridge_ensure_auth_decorator(view_func):
     @wraps(view_func)
-    # @login_required
+    @login_required
     def _wrapped_view(req, *args, **kwargs):
         bridge_ensure_auth(req.user)
         return view_func(req, *args, **kwargs)
