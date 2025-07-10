@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import FollowUpQuestions from "./FollowUpQuestions";
-
 import "./style/chat-style.css";
 
 export type MessageSender = "user" | "bot";
@@ -78,9 +77,9 @@ export const Chat: FC<ChatProps> = observer(
           <>
             <p className="sender-name margin-b_none">{botName}</p>
             <div className="typing-indicator">
-              <span/>
-              <span/>
-              <span/>
+              <span />
+              <span />
+              <span />
             </div>
           </>
         )}

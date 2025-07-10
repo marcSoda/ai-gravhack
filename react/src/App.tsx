@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import showdown from "showdown";
 import styled, { createGlobalStyle } from "styled-components";
 import Chat, { type ChatMessage, type MessageSender } from "./Chat";
 import ChatInput from "./ChatInput";
-import { markdownToHtml } from "./MarkdownRenderer";
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
@@ -70,19 +70,6 @@ const StyledLink = styled.a`
   }
 `;
 
-// function Home() {
-//   return <h2>Shadowbase AI Assistant</h2>;
-// }
-
-// function About() {
-//   return (
-//     <div>
-//       <h2>About Shadowbase AI Assistant</h2>
-//       <p>Powered by Alicia, Chris, Marc, Paden, and Rich!</p>
-//     </div>
-//   );
-// }
-
 const App = () => {
   const createNewMessage = (message: string, sender: MessageSender) => {
     return {
@@ -113,6 +100,11 @@ const App = () => {
     setUserMessages([]);
     setBotMessages([botWelcomeMessage]);
     setChatHistory([botWelcome]);
+  };
+
+  const markdownToHtml = (markdown: string) => {
+    const converter = new showdown.Converter();
+    return converter.makeHtml(markdown);
   };
 
   const appendMessage = (message: string, sender: MessageSender) => {
@@ -160,8 +152,9 @@ const App = () => {
       ? axios
           .get("/api/start-convo/")
           .then((response) => {
-            setConversationId(response.data["convo_id"]);
-            return response.data.message as string;
+            const id = response.data["convo_id"];
+            setConversationId(id);
+            return id;
           })
           .catch((err) => {
             handleApiError(err.message);
@@ -194,7 +187,7 @@ const App = () => {
 
       console.log(`${question} (${id})`);
 
-      axios
+      await axios
         .post(`/api/send-msg/${id}`, {
           contents: question,
         })
