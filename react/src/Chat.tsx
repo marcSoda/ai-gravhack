@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import FollowUpQuestions from "./FollowUpQuestions";
 import "./style/chat-style.css";
 
@@ -29,10 +29,20 @@ export const Chat: FC<ChatProps> = observer(
     onFollowupClick,
   }) => {
     const [showFollowUps, setShowFollowUps] = useState(false);
+    const bottomRef = useRef<HTMLDivElement | null>(null);
 
+    const scrollToBottom = () => {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+    
     useEffect(() => {
       setShowFollowUps(false);
+      scrollToBottom();
     }, [chatHistory.length]);
+
+    useEffect(() => {
+      scrollToBottom();
+    }, [showFollowUps]);
 
     return (
       <div className="chat flex-1 min-h-0 overflow-y-auto pr-2">
@@ -78,6 +88,7 @@ export const Chat: FC<ChatProps> = observer(
             </div>
           </>
         )}
+        <div ref={bottomRef} />
       </div>
     );
   }
