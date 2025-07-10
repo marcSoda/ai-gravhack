@@ -18,28 +18,25 @@ const TeamPage: React.FunctionComponent<Readonly<TeamPageProps>> = () => {
         <em>in alphabetical order</em>
       </div>
       <div style={{ paddingTop: 40, paddingBottom: 40 }}>
-        <ul>
-          <li>
-            Alicia Handian
-            <Task>Content acquisition and quality assurance</Task>
-          </li>
-          <li>
-            Marc Soda
-            <Task>Backend development, authentication, and user interface</Task>
-          </li>
-          <li>
-            Paden Holenstein
-            <Task>Optimizing accuracy and quality assurance</Task>
-          </li>
-          <li>
-            Rich Ricciardi<Task>User interface and chat interaction</Task>
-          </li>
-          <li>
-            Seth Davison<Task>Backend development and AI bridge</Task>
-          </li>
-        </ul>
+        <p>
+          Alicia Handian
+          <Task>Content acquisition and quality assurance</Task>
+        </p>
+        <p>
+          Marc Soda
+          <Task>Backend development, authentication, and user interface</Task>
+        </p>
+        <p>
+          Paden Holenstein
+          <Task>Optimizing accuracy and quality assurance</Task>
+        </p>
+        <p>
+          Rich Ricciardi<Task>User interface and chat interaction</Task>
+        </p>
+        <p>
+          Seth Davison<Task>Backend development and AI bridge</Task>
+        </p>
       </div>
-
       <div style={{ textAlign: "center", opacity: 0.6 }}>
         A special thanks goes out to our team advisors, Chris Davison and Drew
         Bauernschmidt!
