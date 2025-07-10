@@ -45,17 +45,21 @@ export const Chat: FC<ChatProps> = observer(
               : undefined;
           if (chatMessage.sender === "user") {
             return (
-              <div className="from-user no-tail" onClick={onClick}>
-                {chatMessage.message}
-              </div>
+              <div
+                className="from-user no-tail"
+                onClick={onClick}
+                dangerouslySetInnerHTML={{ __html: chatMessage.message }}
+              />
             );
           } else {
             return (
               <>
                 <p className="sender-name margin-b_none">{botName}</p>
-                <div className="from-bot no-tail" onClick={onClick}>
-                  {chatMessage.message}
-                </div>
+                <div
+                  className="from-bot no-tail"
+                  onClick={onClick}
+                  dangerouslySetInnerHTML={{ __html: chatMessage.message }}
+                />
               </>
             );
           }
