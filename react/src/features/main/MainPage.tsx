@@ -1,14 +1,12 @@
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
-import axios from "@/utils/axiosConfig";
-import { AxiosError } from "axios";
-import Chat, { type ChatMessage, type MessageSender } from "@/Chat";
-import ChatInput from "@/ChatInput";
-import { toast } from "sonner";
-import { v4 as uuid } from "uuid";
 import showdown from "showdown";
+import { v4 as uuid } from "uuid";
+import Chat, { type ChatMessage, type MessageSender } from "../../Chat";
+import ChatInput from "../../ChatInput";
 
 const newMsg = (text: string, sender: MessageSender): ChatMessage => ({
-  id: uuid(),                                 // react key
+  id: uuid(), // react key
   timestamp: new Date().toLocaleString(),
   message: text,
   sender,
@@ -19,9 +17,9 @@ const botWelcome = `Hello! I am your ${botName}. How can I help you today?`;
 
 export default function MainPage() {
   const [conversationId, setConversationId] = useState("");
-  const [awaiting, setAwaiting]             = useState(false);
-  const [chatHistory, setChatHistory]       = useState<ChatMessage[]>([]);
-  const [followup, setFollowup]             = useState("");
+  const [awaiting, setAwaiting] = useState(false);
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [followup, setFollowup] = useState("");
 
   useEffect(() => {
     setChatHistory([newMsg(botWelcome, "bot")]);
@@ -38,7 +36,10 @@ export default function MainPage() {
       "Hmmm … my brain is lagging. One more time?",
       "Cleanup on aisle 5! Something went wrong.",
     ];
-    append(humanMsg || replies[Math.floor(Math.random() * replies.length)], "bot");
+    append(
+      humanMsg || replies[Math.floor(Math.random() * replies.length)],
+      "bot"
+    );
   };
 
   const getConversationId = async () => {
