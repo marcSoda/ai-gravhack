@@ -18,10 +18,11 @@ const botName = "Shadowbase AI Assistant";
 const botWelcome = `Hello! I am your ${botName}. How can I help you today?`;
 
 export default function MainPage() {
-  const [conversationId, setConversationId] = useState("");
-  const [awaiting, setAwaiting]             = useState(false);
-  const [chatHistory, setChatHistory]       = useState<ChatMessage[]>([]);
-  const [followup, setFollowup]             = useState("");
+  const [conversationId, setConversationId]   = useState("");
+  const [awaiting, setAwaiting]               = useState(false);
+  const [chatHistory, setChatHistory]         = useState<ChatMessage[]>([]);
+  const [followupOptions, setFollowupOptions] = useState([]);
+  const [followup, setFollowup]               = useState("");
 
   useEffect(() => {
     setChatHistory([newMsg(botWelcome, "bot")]);
@@ -75,8 +76,9 @@ export default function MainPage() {
       const id = await getConversationId();
       if (!id) return;
 
-      const { data } = await axios.post(`/api/send-msg/${id}`, { contents: q });
+      const { data } = await axios.post(`/api/send-msg/${id}`, { contents: q, follow_up_count: 3 });
       append(markdownToHtml(data.answer), "bot");
+      setFollowupOptions(data.recommended_follow_ups || [])
     } catch (err) {
       const msg =
         err instanceof AxiosError
@@ -96,6 +98,7 @@ export default function MainPage() {
             botName={botName}
             chatHistory={chatHistory}
             awaitingResponse={awaiting}
+            followupOptions={followupOptions}
             onFollowupClick={setFollowup}
           />
 

@@ -15,6 +15,7 @@ export interface ChatProps {
   botName?: string;
   chatHistory: ChatMessage[];
   awaitingResponse?: boolean;
+  followupOptions?: string[];
   onFollowupClick?: (questionText: string) => void;
 }
 
@@ -23,6 +24,7 @@ export const Chat: FC<ChatProps> = observer(
     botName = "Shadowbase AI Assistant",
     chatHistory = [],
     awaitingResponse = false,
+    followupOptions = [],
     onFollowupClick,
   }) => {
     const [showFollowUps, setShowFollowUps] = useState(false);
@@ -59,14 +61,10 @@ export const Chat: FC<ChatProps> = observer(
             );
           }
         })}
-        {showFollowUps && (
+        {showFollowUps && followupOptions.length && (
           <FollowUpQuestions
             onClick={onFollowupClick}
-            questions={[
-              "What are the advantages of using Shadowbase for data replication?",
-              "How does Shadowbase handle data consistency during replication?",
-              "Can Shadowbase be integrated with cloud-based systems?",
-            ]}
+            questions={followupOptions}
           />
         )}
         {awaitingResponse && (
