@@ -1,5 +1,6 @@
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import axios from '@/utils/axiosConfig'
 import { markdownToHtml } from "@/MarkdownRenderer";
 import Chat, { type ChatMessage, type MessageSender } from "@/Chat";
 import ChatInput from "@/ChatInput";
@@ -34,6 +35,7 @@ export default function MainPage() {
       setConversationId(data["convo_id"]);
       return data["convo_id"] as string;
     } catch (err) {
+      console.log(err);
       toast.error("Unable to start conversation");
       return "";
     }
@@ -51,7 +53,7 @@ export default function MainPage() {
         contents: question,
       });
 
-      append(markdownToHtml(data["answer"]), "bot");
+      append(data["answer"], "bot");
     } catch (err) {
       const msg =
         err instanceof AxiosError
