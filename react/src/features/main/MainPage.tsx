@@ -1,22 +1,15 @@
-import { useEffect, useState } from "react";
-import axios from "@/utils/axiosConfig";
 import { AxiosError } from "axios";
-
+import { useEffect, useState } from "react";
 import showdown from "showdown";
 import { v4 as uuid } from "uuid";
-
-import Chat, { type ChatMessage, type MessageSender } from "@/Chat";
-import ChatInput from "@/ChatInput";
-
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import axios from "../..//utils/axiosConfig";
+import Chat, { type ChatMessage, type MessageSender } from "../../Chat";
+import ChatInput from "../../ChatInput";
+import { Card, CardContent, CardFooter } from "../../components/ui/card";
+import { Separator } from "../../components/ui/separator";
 
 const newMsg = (text: string, sender: MessageSender): ChatMessage => ({
-  id: uuid(), // react key
+  id: uuid(), // react keys
   timestamp: new Date().toLocaleString(),
   message: text,
   sender,
@@ -50,7 +43,10 @@ export default function MainPage() {
       "Hmmm … my brain is lagging. One more time?",
       "Cleanup on aisle 5! Something went wrong.",
     ];
-    append(humanMsg || replies[Math.floor(Math.random() * replies.length)], "bot");
+    append(
+      humanMsg || replies[Math.floor(Math.random() * replies.length)],
+      "bot"
+    );
   };
 
   /* lazily fetch (or reuse) conversation id from the server */
