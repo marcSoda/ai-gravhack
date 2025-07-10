@@ -11,6 +11,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 
 import useHideSidenavOnRoutes from './hooks/useHideSidenavOnRoutes';
+import AboutPage from './AboutPage';
 
 function App() {
     const showSidenav = useHideSidenavOnRoutes(['/login']);
@@ -26,6 +27,7 @@ function App() {
                             <Routes>
                                 <Route path="/login" element={<LoginForm />} />
                                 <Route path="/logout" element={<Logout />} />
+                                <Route path="/about" element={<AboutPage />} />
                                 <Route path="/" element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
                             </Routes>
                         </div>
