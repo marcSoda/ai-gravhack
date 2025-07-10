@@ -28,8 +28,7 @@ SECRET_KEY = 'django-insecure-(22#y-qmldz=0f((mi4^xrvuj=t3^i(*pxjhms0@wakblo8wg^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -127,10 +126,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -145,7 +140,6 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_TRUSTED_ORIGINS = [
     # public IP (keep updated if changes)
     "http://3.131.9.49",
-    "http://3.140.190.165",
     # react
     "http://react-prod:5173",
     "http://react-dev:5173",
@@ -185,3 +179,11 @@ CORS_ALLOW_HEADERS = (
     "x-csrftoken",
     "x-requested-with",
 )
+
+# static files
+STATIC_ROOT = BASE_DIR / "static"
+STATIC_URL = 'static/'
+
+# media files
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = 'media/'

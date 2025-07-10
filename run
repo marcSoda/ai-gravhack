@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ $1 == "prod" ]; then
+    echo "RUN: composing with prod profile"
+    export PROFILE=prod
+    export VITE_PORT=
+elif [ $1 == "dev" ]; then
+    echo "RUN: composing with dev profile"
+    export PROFILE=dev
+    export VITE_PORT=5173:5173
+else
+    echo "RUN: ERROR: invalid profile set"
+    exit 1
+fi
+
+docker compose --profile $PROFILE up --build
