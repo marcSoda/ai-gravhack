@@ -138,8 +138,8 @@ SESSION_COOKIE_SAMESITE = 'Strict'
 CSRF_COOKIE_HTTPONLY = False
 SESSION_COOKIE_HTTPONLY = True
 CSRF_TRUSTED_ORIGINS = [
-    # public IP (keep updated if changes)
-    "http://3.131.9.49",
+    "https://shad-ai.gravic.com",
+    "http://shad-ai.gravic.com",
     # react
     "http://react-prod:5173",
     "http://react-dev:5173",
@@ -156,12 +156,13 @@ CSRF_TRUSTED_ORIGINS = [
 #cors setup
 # CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
+    "https://shad-ai.gravic.com",
+    "http://shad-ai.gravic.com",
     "http://127.0.0.1:5173",
     "http://0.0.0.0:5173",
     "http://localhost",
     "http://127.0.0.1",
     "http://0.0.0.0",
-    # "https://eb746667b1c1.ngrok-free.app/"
 ]
 CORS_ALLOW_METHODS = (
     "DELETE",
