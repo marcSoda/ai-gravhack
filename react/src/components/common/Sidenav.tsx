@@ -58,10 +58,10 @@ const Sidenav: React.FC = () => {
     // Main navigation items
     const navItems: NavItemProps[] = [
         { type: 'link', to: '/', Icon: Home, title: 'Home' },
-        { type: 'action', action: () => toast.error("Not yet implemented"), Icon: Calculator, title: 'Calcs' },
-        { type: 'action', action: () => toast.error("Not yet implemented"), Icon: List, title: 'Master Lists' },
-        { type: 'action', action: () => toast.error("Not yet implemented"), Icon: PlusSquare, title: 'Create List' },
-        { type: 'action', action: () => toast.error("Not yet implemented"), Icon: Edit2, title: 'Edit List' },
+        { type: 'action', action: () => toast.error("Not yet implemented"), Icon: Calculator, title: 'one' },
+        { type: 'action', action: () => toast.error("Not yet implemented"), Icon: List, title: 'two' },
+        { type: 'action', action: () => toast.error("Not yet implemented"), Icon: PlusSquare, title: 'three' },
+        { type: 'action', action: () => toast.error("Not yet implemented"), Icon: Edit2, title: 'four' },
     ];
 
     // Bottom navigation items
