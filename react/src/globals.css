@@ -65,3 +65,8 @@
     min-height: 100vh;
     padding: 20px;
 }
+
+ol, ul, menu {
+    list-style: revert;
+    padding: revert;
+}
