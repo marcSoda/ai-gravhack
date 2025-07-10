@@ -10,8 +10,8 @@ const AboutPage: React.FunctionComponent<Readonly<AboutPageProps>> = () => {
     return converter.makeHtml(markdown);
   };
 
-  const aboutPageMarkdown = `**Microsoft's Azure AI Foundry Model**
-
+  const aboutPageMarkdown = `
+  **Microsoft's Azure AI Foundry Model**
 
 - *Microsoft's Foundry Model* is an LLM (Large language Model) based off OpenAI's ChatGPT (Chat Generative Pre-trained Transformer)
 - User inputs are answered based on an easily searchable Index trained on "private data," in this case, Shadowbase Manuals, Softdocs (Software Documentation), Training, and Publications.
@@ -19,9 +19,9 @@ const AboutPage: React.FunctionComponent<Readonly<AboutPageProps>> = () => {
 
   <br/>
 
-  **Resource Augmented Generation (RAG)**
+**Resource Augmented Generation (RAG)**
 
-  RAG is a pattern that uses your data with an LLM to generate answers specific to your data.
+RAG is a pattern that uses your data with an LLM to generate answers specific to your data.
 
 - When a user asks a question, the data store is searched based on user input.
 - The user question is then combined with the matching results and sent to the LLM using a prompt (explicit instructions to an AI or machine learning model) to generate the desired answer.
