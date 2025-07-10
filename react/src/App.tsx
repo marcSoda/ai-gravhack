@@ -1,14 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
-
 import LoginForm from './features/auth/Login';
 import Logout from './features/auth/Logout';
 import MainPage from './features/main/MainPage';
-
 import ProtectedRoute from './components/common/ProtectedRoute';
-import Sidenav from './components/common/Sidenav';
 import TopNav from './components/common/topnav';
 
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
