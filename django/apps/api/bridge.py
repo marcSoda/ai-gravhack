@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from apps.api.models import BridgeAuth
 
 TIMEOUT=30
-BRIDGE_URL = "https://843960beb1cb.ngrok-free.app/ai"
+BRIDGE_URL = "https://142b805cbbae.ngrok-free.app/ai"
 AUTH_ROUTE = "authenticate"
 AI_ROUTE = "azure_open_ai/v1/shadowbase"
 START_CONVO_ROUTE = "start-conversation"
