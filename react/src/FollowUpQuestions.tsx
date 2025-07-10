@@ -9,18 +9,14 @@ const Row = styled.div`
 
 const Chip = styled.div`
   float: right;
-  margin-top: 4px;
-  margin-bottom: 4px;
-
+  margin: 4px 0;
   border-style: solid;
   border-radius: 6px;
-  border-width: 4px;
+  border-width: 2px;
   border-color: #2655ec;
-
+  padding: 0 8px;
   background-color: #000050;
-
-  font-size: 1.1rem;
-
+  font-size: 1rem;
   cursor: pointer;
 `;
 
