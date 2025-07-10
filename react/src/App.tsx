@@ -131,6 +131,30 @@ const App = () => {
     return true;
   };
 
+  const handleApiError = (error: string) => {
+    console.error(error);
+    switch (Math.floor(Math.random() * 3)) {
+      case 0:
+        appendMessage(
+          "I am not feeling well; let me get back to you later.",
+          "bot"
+        );
+        return;
+      case 1:
+        appendMessage("It's been a tough day, can you try again later?", "bot");
+        return;
+      case 2:
+        appendMessage("Hmmm, my brain is functioning at the moment.", "bot");
+        return;
+      default:
+        appendMessage(
+          "I am having some issues over here. Cleanup, aisle 5!",
+          "bot"
+        );
+        return;
+    }
+  };
+
   const requestConversationId = () =>
     !conversationId
       ? axios
@@ -140,22 +164,20 @@ const App = () => {
             return response.data.message as string;
           })
           .catch((err) => {
-            console.error(err.message);
-            appendMessage(
-              "I am not feeling well; let me get back to you later.",
-              "bot"
-            );
+            handleApiError(err.message);
             return "";
           })
       : Promise.resolve(conversationId);
 
   const handleAskQuestion = async (question: string) => {
     try {
-      if (question.toLowerCase() === "clear") {
+      if (
+        question.toLowerCase() === "clear" ||
+        question.toLowerCase() === "clr"
+      ) {
         initializeChat();
         return;
       }
-      console.log(question);
 
       if (!appendMessage(question, "user")) {
         return;
@@ -165,7 +187,12 @@ const App = () => {
 
       const id = await requestConversationId();
 
-      if (!id) return;
+      if (!id) {
+        handleApiError("Could not establish conversation.");
+        return;
+      }
+
+      console.log(`${question} (${id})`);
 
       axios
         .post(`/api/send-msg/${id}`, {
@@ -174,7 +201,7 @@ const App = () => {
         .then((response) =>
           appendMessage(markdownToHtml(response.data["answer"]), "bot")
         )
-        .catch((err) => appendMessage(err.message, "bot"));
+        .catch((err) => handleApiError(err.message));
     } finally {
       setIsAsking(false);
     }
