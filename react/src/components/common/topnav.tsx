@@ -1,7 +1,7 @@
 import { Bot, Moon, Sun } from "lucide-react";
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { useTheme } from "@/context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
 const TopNav: React.FC = () => {
   const location = useLocation();
