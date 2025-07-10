@@ -1,5 +1,6 @@
 import React, { useEffect, useState, type FC } from "react";
 import InputGroup from "./InputGroup";
+import { SendHorizonal } from "lucide-react";
 
 export interface ChatInputProps {
   newValue?: string;
@@ -10,25 +11,46 @@ export const ChatInput: FC<ChatInputProps> = ({ onAskQuestion, newValue }) => {
   const [value, setValue] = useState("");
 
   useEffect(() => {
-    if (newValue) setValue(newValue);
+    if (newValue !== undefined) setValue(newValue);
   }, [newValue]);
 
+  const send = () => {
+    const text = value.trim();
+    if (!text) return;
+    onAskQuestion(text);
+    setValue("");
+  };
+
   return (
-    <InputGroup
-      inputProps={{
-        placeholder: "Ask Question",
-        value,
-        onChange: (e) => setValue(e.target.value),
+    <form
+      className="w-full"
+      onSubmit={(e) => {
+        e.preventDefault();
+        send();
       }}
-      buttonProps={{
-        onClick: () => {
-          onAskQuestion(value);
-          setValue("");
-        },
-        children: "Ask",
-        disabled: value.trim() === "",
-      }}
-    />
+    >
+      <InputGroup
+        inputProps={{
+          placeholder: "Ask a question…",
+          value,
+          onChange: (e) => setValue(e.target.value),
+          onKeyDown: (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              send();
+            }
+          },
+          className: "min-h-[2.5rem]",
+        }}
+        buttonProps={{
+          type: "submit",
+          disabled: value.trim() === "",
+          children: <SendHorizonal className="h-4 w-4" />,
+          "aria-label": "Send message",
+          onClick: send,
+        }}
+      />
+    </form>
   );
 };
 

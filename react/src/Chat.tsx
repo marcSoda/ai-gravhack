@@ -30,6 +30,7 @@ export const Chat: FC<ChatProps> = observer(
   }) => {
     const [showFollowUps, setShowFollowUps] = useState(false);
 
+    /* collapse follow-ups whenever a new message arrives */
     useEffect(() => {
       setShowFollowUps(false);
     }, [chatHistory.length]);
@@ -39,38 +40,42 @@ export const Chat: FC<ChatProps> = observer(
         {chatHistory.map((chatMessage, index) => {
           const onClick =
             index === chatHistory.length - 1
-              ? () => setShowFollowUps((showFollowUps) => !showFollowUps)
+              ? () => setShowFollowUps((show) => !show)
               : undefined;
+
           if (chatMessage.sender === "user") {
             return (
               <div
-                className="from-user no-tail"
+                key={chatMessage.id}
+                className="from-user"
                 onClick={onClick}
                 dangerouslySetInnerHTML={{ __html: chatMessage.message }}
               />
             );
-          } else {
-            return (
-              <>
-                <p className="sender-name margin-b_none">{botName}</p>
-                <div
-                  className="from-bot no-tail"
-                  onClick={onClick}
-                  dangerouslySetInnerHTML={{ __html: chatMessage.message }}
-                />
-              </>
-            );
           }
+
+          return (
+            <div key={chatMessage.id}>
+              <p className="sender-name">{botName}</p>
+              <div
+                className="from-bot"
+                onClick={onClick}
+                dangerouslySetInnerHTML={{ __html: chatMessage.message }}
+              />
+            </div>
+          );
         })}
-        {showFollowUps && followupOptions.length && (
+
+        {showFollowUps && followupOptions.length > 0 && (
           <FollowUpQuestions
             onClick={onFollowupClick}
             questions={followupOptions}
           />
         )}
+
         {awaitingResponse && (
           <>
-            <p className="sender-name margin-b_none">{botName}</p>
+            <p className="sender-name">{botName}</p>
             <div className="typing-indicator">
               <span />
               <span />
