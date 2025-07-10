@@ -5,11 +5,11 @@ import showdown from "showdown";
 import { v4 as uuid } from "uuid";
 import axios from "../..//utils/axiosConfig";
 import AboutPage from "../../AboutPage";
-import HelpPage from "../../HelpPage";
 import Chat, { type ChatMessage, type MessageSender } from "../../Chat";
 import ChatInput from "../../ChatInput";
 import { Card, CardContent, CardFooter } from "../../components/ui/card";
 import { Separator } from "../../components/ui/separator";
+import HelpPage from "../../HelpPage";
 import TeamPage from "../../TeamPage";
 
 const newMsg = (text: string, sender: MessageSender): ChatMessage => ({
@@ -27,7 +27,6 @@ export default function MainPage() {
   const [awaiting, setAwaiting] = useState(false);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [followupOptions, setFollowupOptions] = useState<string[]>([]);
-  const [followup, setFollowup] = useState("");
 
   useEffect(() => {
     setChatHistory([newMsg(botWelcome, "bot")]);
@@ -113,17 +112,13 @@ export default function MainPage() {
                     chatHistory={chatHistory}
                     awaitingResponse={awaiting}
                     followupOptions={followupOptions}
-                    onFollowupClick={setFollowup}
+                    onFollowupClick={ask}
                   />
                 </CardContent>
                 <Separator />
                 <CardFooter className="pt-4 pb-6">
                   <div className="w-full">
-                    <ChatInput
-                      isAsking={awaiting}
-                      onAskQuestion={ask}
-                      newValue={followup}
-                    />
+                    <ChatInput isAsking={awaiting} onAskQuestion={ask} />
                   </div>
                 </CardFooter>
               </Card>
