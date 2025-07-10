@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from apps.api.bridge import bridge_ensure_auth
 from django.contrib.auth import get_user_model
 
-BRIDGE_URL = "https://142b805cbbae.ngrok-free.app/ai/authenticate"
+BRIDGE_URL = "https://dev-api.remark.cloud/ai/authenticate"
 
 def bridge_ensure_auth_decorator(view_func):
     @wraps(view_func)
