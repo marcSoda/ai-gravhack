@@ -14,8 +14,6 @@ export interface ChatMessage {
 export interface ChatProps {
   botName?: string;
   chatHistory: ChatMessage[];
-  userMessages: string[];
-  botMessages: string[];
   awaitingResponse?: boolean;
   onFollowupClick?: (questionText: string) => void;
 }
@@ -24,8 +22,6 @@ export const Chat: FC<ChatProps> = observer(
   ({
     botName = "Shadowbase AI Assistant",
     chatHistory = [],
-    userMessages = [],
-    botMessages = [],
     awaitingResponse = false,
     onFollowupClick,
   }) => {

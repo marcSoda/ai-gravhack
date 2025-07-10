@@ -220,8 +220,6 @@ const App = () => {
         <Chat
           botName={botName}
           chatHistory={chatHistory}
-          userMessages={userMessages}
-          botMessages={botMessages}
           awaitingResponse={isAsking}
           onFollowupClick={setFollowUpQuestion}
         />
