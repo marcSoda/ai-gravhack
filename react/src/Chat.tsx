@@ -30,19 +30,17 @@ export const Chat: FC<ChatProps> = observer(
   }) => {
     const [showFollowUps, setShowFollowUps] = useState(false);
 
-    /* collapse follow-ups whenever a new message arrives */
     useEffect(() => {
       setShowFollowUps(false);
     }, [chatHistory.length]);
 
     return (
-      <div className="chat">
+      <div className="chat flex-1 min-h-0 overflow-y-auto pr-2">
         {chatHistory.map((chatMessage, index) => {
           const onClick =
             index === chatHistory.length - 1
               ? () => setShowFollowUps((show) => !show)
               : undefined;
-
           if (chatMessage.sender === "user") {
             return (
               <div
@@ -53,7 +51,6 @@ export const Chat: FC<ChatProps> = observer(
               />
             );
           }
-
           return (
             <div key={chatMessage.id}>
               <p className="sender-name">{botName}</p>
@@ -65,14 +62,12 @@ export const Chat: FC<ChatProps> = observer(
             </div>
           );
         })}
-
         {showFollowUps && followupOptions.length > 0 && (
           <FollowUpQuestions
             onClick={onFollowupClick}
             questions={followupOptions}
           />
         )}
-
         {awaitingResponse && (
           <>
             <p className="sender-name">{botName}</p>

@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Home, Info, LogOut, UsersRound } from "lucide-react";
+import { Home, Info, LogOut, Moon, UsersRound } from "lucide-react";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -64,6 +64,7 @@ const TopNav: React.FC = () => {
 
   const rightNavItems: NavItemProps[] = [
     { type: "link", to: "/logout", Icon: LogOut, title: "Logout" },
+    { type: 'action', action: () => console.log('Toggle Dark Mode'), Icon: Moon, title: 'Theme' },
   ];
 
   return (
