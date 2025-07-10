@@ -11,7 +11,7 @@ BRIDGE_URL = "https://142b805cbbae.ngrok-free.app/ai"
 AUTH_ROUTE = "authenticate"
 AI_ROUTE = "azure_open_ai/v1/shadowbase"
 START_CONVO_ROUTE = "start-conversation"
-FOLLOW_UP_COUNT_QUERY_PARAM = "?followUpCount="
+FOLLOW_UP_COUNT_QUERY_PARAM = "followUpCount"
 
 def bridge_ensure_auth(user):
     bridge_auth = BridgeAuth.objects.filter(django_user=user).first()
