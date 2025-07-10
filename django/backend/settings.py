@@ -167,7 +167,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
     "http://127.0.0.1",
     "http://0.0.0.0",
-    "https://eb746667b1c1.ngrok-free.app/"
+    # "https://eb746667b1c1.ngrok-free.app/"
 ]
 CORS_ALLOW_METHODS = (
     "DELETE",
