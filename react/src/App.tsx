@@ -85,8 +85,8 @@ const App = () => {
 
   const [conversationId, setConversationId] = useState("");
   const [isAsking, setIsAsking] = useState(false);
-  const [botMessages, setBotMessages] = useState([] as string[]);
-  const [userMessages, setUserMessages] = useState([] as string[]);
+  const [_botMessages, setBotMessages] = useState([] as string[]);
+  const [_userMessages, setUserMessages] = useState([] as string[]);
   const [chatHistory, setChatHistory] = useState([] as ChatMessage[]);
   const [followUpQuestion, setFollowUpQuestion] = useState("");
 
@@ -157,7 +157,7 @@ const App = () => {
             return id;
           })
           .catch((err) => {
-            handleApiError(err.message);
+            handleApiError(`Could not establish conversation. (${err.message})`);
             return "";
           })
       : Promise.resolve(conversationId);
@@ -181,7 +181,6 @@ const App = () => {
       const id = await requestConversationId();
 
       if (!id) {
-        handleApiError("Could not establish conversation.");
         return;
       }
 
