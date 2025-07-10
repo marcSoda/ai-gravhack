@@ -13,7 +13,10 @@ const TopNav: React.FC = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 h-14 z-50 bg-secondary text-secondary-foreground">
-      <div className="h-full flex items-center justify-between px-6">
+      <div
+        className="h-full flex items-center justify-between px-6"
+        style={{ paddingLeft: 16 }}
+      >
         <div className="flex items-center">
           <Bot className="w-8 h-8" />
           <span className="ml-3 text-xl font-semibold select-none">
