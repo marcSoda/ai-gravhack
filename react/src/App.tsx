@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Chat, { type ChatMessage, type MessageSender } from "./Chat";
 import ChatInput from "./ChatInput";
@@ -98,13 +98,22 @@ const App = () => {
 
   const [conversationId, setConversationId] = useState("");
   const [isAsking, setIsAsking] = useState(false);
-  const [botMessages, setBotMessages] = useState([
-    botWelcomeMessage,
-  ] as string[]);
+  const [botMessages, setBotMessages] = useState([] as string[]);
   const [userMessages, setUserMessages] = useState([] as string[]);
-  const [chatHistory, setChatHistory] = useState([botWelcome] as ChatMessage[]);
-
+  const [chatHistory, setChatHistory] = useState([] as ChatMessage[]);
   const [followUpQuestion, setFollowUpQuestion] = useState("");
+
+  useEffect(() => {
+    if (!chatHistory.length) {
+      initializeChat();
+    }
+  }, []);
+
+  const initializeChat = () => {
+    setUserMessages([]);
+    setBotMessages([botWelcomeMessage]);
+    setChatHistory([botWelcome]);
+  };
 
   const appendMessage = (message: string, sender: MessageSender) => {
     if (!message.trim()) return false;
@@ -131,23 +140,32 @@ const App = () => {
             return response.data.message as string;
           })
           .catch((err) => {
-            appendMessage(err.message, "bot");
+            console.error(err.message);
+            appendMessage(
+              "I am not feeling well; let me get back to you later.",
+              "bot"
+            );
             return "";
           })
       : Promise.resolve(conversationId);
 
   const handleAskQuestion = async (question: string) => {
     try {
+      if (question.toLowerCase() === "clear") {
+        initializeChat();
+        return;
+      }
       console.log(question);
+
+      if (!appendMessage(question, "user")) {
+        return;
+      }
+
       setIsAsking(true);
 
       const id = await requestConversationId();
 
       if (!id) return;
-
-      if (!appendMessage(question, "user")) {
-        return;
-      }
 
       axios
         .post(`/api/send-msg/${id}`, {
