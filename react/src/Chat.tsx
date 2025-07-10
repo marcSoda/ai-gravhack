@@ -34,7 +34,7 @@ export const Chat: FC<ChatProps> = observer(
     const scrollToBottom = () => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     };
-    
+
     useEffect(() => {
       setShowFollowUps(false);
       scrollToBottom();
@@ -43,6 +43,11 @@ export const Chat: FC<ChatProps> = observer(
     useEffect(() => {
       scrollToBottom();
     }, [showFollowUps]);
+
+    const lastBotMessage = chatHistory
+      .slice()
+      .reverse()
+      .find((msg) => msg.sender === "bot")?.id;
 
     return (
       <div className="chat flex-1 min-h-0 overflow-y-auto pr-2">
@@ -61,11 +66,27 @@ export const Chat: FC<ChatProps> = observer(
               />
             );
           }
+          const isLastBotMessage =
+            !!lastBotMessage && lastBotMessage === chatMessage.id;
+
           return (
             <div key={chatMessage.id}>
               <p className="sender-name">{botName}</p>
               <div
                 className="from-bot"
+                style={{
+                  cursor:
+                    followupOptions.length > 0 && isLastBotMessage
+                      ? "pointer"
+                      : "default",
+                }}
+                title={
+                  followupOptions.length > 0 && isLastBotMessage
+                    ? showFollowUps
+                      ? "Hide suggested follow-up questions."
+                      : "Show suggested follow-up questions."
+                    : ""
+                }
                 onClick={onClick}
                 dangerouslySetInnerHTML={{ __html: chatMessage.message }}
               />
