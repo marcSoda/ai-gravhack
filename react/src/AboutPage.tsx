@@ -39,7 +39,7 @@ An index "is a data store that allows you to search data efficiently."
   Zoom rag-pattern-with-index.png
   ![rag-pattern-with-index](https://storage.basecamp.com/bc4-production-blobs/31d7d1ca-5d92-11f0-9446-0242ac120005?response-content-disposition=inline%3B%20filename%3D%22rag-pattern-with-index.png%22%3B%20filename%2A%3DUTF-8%27%27rag-pattern-with-index.png&response-content-type=image%2Fpng&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=PSFBSAZROHOHENDNACPGDOPOONMFHLBHNMKOEBGFNK%2F20250710%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250710T145247Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=c2d48bd543148273696ecc182f598d14454ae306e9a21f85c04b2872f0359eb8)
 
-
+<br/>
 Source: https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/retrieval-augmented-generation
 `;
 

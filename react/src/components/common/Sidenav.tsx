@@ -1,12 +1,6 @@
+import { Home, Info, LogOut, UsersRound, type LucideIcon } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Home,
-  Info,
-  UsersRound,
-  LogOut,
-  type LucideIcon,
-} from "lucide-react";
 
 interface NavLinkItem {
   type: "link";
@@ -71,6 +65,9 @@ const Sidenav: React.FC = () => {
     { type: "link", to: "/logout", Icon: LogOut, title: "Logout" },
   ];
 
+  const paulUrl =
+    "https://storage.basecamp.com/bc4-production-blob-previews/d2b9801c-5da5-11f0-85b2-0242ac120004?response-cache-control=private%2C%20max-age%3D3155695200&response-content-disposition=inline&response-content-type=image%2Favif&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=PSFBSAZROHOHENDNACPGDOPOONMFHLBHNMKOEBGFNK%2F20250710%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250710T155210Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=3b6df32ab975dc70702efcee74b9fe2f890186a4a40aa07f47e95ce76c1d107e";
+
   return (
     <div
       className={`fixed top-0 left-0 h-full z-30 shadow-lg transition-[width] duration-300 ${
@@ -80,6 +77,15 @@ const Sidenav: React.FC = () => {
       onMouseLeave={() => setIsOpen(false)}
     >
       <div className="flex flex-col justify-between h-full">
+        <img
+          src={paulUrl}
+          style={{
+            maxWidth: "100%",
+            height: "auto",
+            marginTop: 64,
+            opacity: isOpen ? 1 : 0,
+          }}
+        />
         <nav className="flex flex-col justify-center flex-1">
           {navItems.map((item) => (
             <NavItem key={item.title} {...item} isOpen={isOpen} />
