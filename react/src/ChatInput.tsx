@@ -1,13 +1,19 @@
-import React, { useEffect, useState, type FC } from "react";
-import InputGroup from "./InputGroup";
 import { SendHorizonal } from "lucide-react";
+import { observer } from "mobx-react-lite";
+import { useEffect, useState, type FC } from "react";
+import InputGroup from "./InputGroup";
 
 export interface ChatInputProps {
   newValue?: string;
+  isAsking?: boolean;
   onAskQuestion: (question: string) => void;
 }
 
-export const ChatInput: FC<ChatInputProps> = ({ onAskQuestion, newValue }) => {
+export const ChatInput: FC<ChatInputProps> = ({
+  onAskQuestion,
+  newValue,
+  isAsking = false,
+}) => {
   const [value, setValue] = useState("");
 
   useEffect(() => {
@@ -31,7 +37,9 @@ export const ChatInput: FC<ChatInputProps> = ({ onAskQuestion, newValue }) => {
     >
       <InputGroup
         inputProps={{
-          placeholder: "Ask a question…",
+          placeholder: isAsking ? "Waiting for response..." : "Ask a question…",
+          style: { cursor: isAsking ? "default" : "text" },
+          disabled: isAsking,
           value,
           onChange: (e) => setValue(e.target.value),
           onKeyDown: (e) => {
@@ -44,7 +52,7 @@ export const ChatInput: FC<ChatInputProps> = ({ onAskQuestion, newValue }) => {
         }}
         buttonProps={{
           type: "submit",
-          disabled: value.trim() === "",
+          disabled: value.trim() === "" || isAsking,
           children: <SendHorizonal className="h-4 w-4" />,
           "aria-label": "Send message",
           onClick: send,
@@ -54,4 +62,4 @@ export const ChatInput: FC<ChatInputProps> = ({ onAskQuestion, newValue }) => {
   );
 };
 
-export default ChatInput;
+export default observer(ChatInput);

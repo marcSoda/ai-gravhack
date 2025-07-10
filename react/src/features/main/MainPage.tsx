@@ -117,7 +117,11 @@ export default function MainPage() {
                 <Separator />
                 <CardFooter className="pt-4 pb-6">
                   <div className="w-full">
-                    <ChatInput onAskQuestion={ask} newValue={followup} />
+                    <ChatInput
+                      isAsking={awaiting}
+                      onAskQuestion={ask}
+                      newValue={followup}
+                    />
                   </div>
                 </CardFooter>
               </Card>
