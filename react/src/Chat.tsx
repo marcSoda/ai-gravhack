@@ -74,9 +74,9 @@ export const Chat: FC<ChatProps> = observer(
           <>
             <p className="sender-name margin-b_none">{botName}</p>
             <div className="typing-indicator">
-              <span></span>
-              <span></span>
-              <span></span>
+              <span/>
+              <span/>
+              <span/>
             </div>
           </>
         )}
