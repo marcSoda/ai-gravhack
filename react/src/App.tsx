@@ -1,13 +1,14 @@
 import { Route, Routes } from "react-router-dom";
+import { Toaster } from "sonner";
+import AboutPage from "./AboutPage";
+import TeamPage from "./TeamPage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import TopNav from "./components/common/topnav";
+import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import LoginForm from "./features/auth/Login";
 import Logout from "./features/auth/Logout";
 import MainPage from "./features/main/MainPage";
-import { AuthProvider } from "./context/AuthContext";
-import { ThemeProvider } from "./context/ThemeContext";
-import { Toaster } from "sonner";
-import AboutPage from "./AboutPage";
 import useHideSidenavOnRoutes from "./hooks/useHideSidenavOnRoutes";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/about" element={<AboutPage />} />
+                <Route path="/team" element={<TeamPage />} />
                 <Route
                   path="/"
                   element={

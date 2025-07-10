@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Home, Info, LogOut } from "lucide-react";
+import { Home, Info, LogOut, UsersRound } from "lucide-react";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -59,6 +59,7 @@ const TopNav: React.FC = () => {
   const navItems: NavItemProps[] = [
     { type: "link", to: "/", Icon: Home, title: "Home" },
     { type: "link", to: "/about", Icon: Info, title: "About" },
+    { type: "link", to: "/team", Icon: UsersRound, title: "Team" },
   ];
 
   const rightNavItems: NavItemProps[] = [
