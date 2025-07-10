@@ -1,77 +1,32 @@
-import React from "react";
-import {
-  type FC,
-  type InputHTMLAttributes,
-  type ButtonHTMLAttributes,
-} from "react";
-import styled from "styled-components";
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import React, { FC, InputHTMLAttributes, ButtonHTMLAttributes } from "react";
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: stretch;
-`;
-
-const sharedStyles = `
-  border: 1px solid #ccc;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-`;
-
-const StyledInput = styled.input`
-  ${sharedStyles}
-  border-right: none;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  flex: 1;
-  outline: none;
-`;
-
-const StyledButton = styled.button`
-  ${sharedStyles}
-  background-color: #3e4043;
-  color: white;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-  cursor: pointer;
-
-  &:not(:disabled):hover {
-    transition: background-color 0.2s;
-    background-color: #2c3139;
-  }
-
-  &:disabled {
-    cursor: default;
-    opacity: 0.5;
-  }
-`;
-
-interface InputGroupProps {
-  inputProps?: InputHTMLAttributes<HTMLInputElement>;
-  buttonProps?: ButtonHTMLAttributes<HTMLButtonElement>;
+export interface InputGroupProps {
+  inputProps: InputHTMLAttributes<HTMLInputElement>;
+  buttonProps: ButtonHTMLAttributes<HTMLButtonElement>;
 }
 
-export const InputGroup: FC<InputGroupProps> = ({
-  inputProps,
-  buttonProps,
-}) => {
-  const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (
-      e.code === "Enter" &&
-      buttonProps?.onClick &&
-      typeof buttonProps.onClick === "function"
-    ) {
-      (buttonProps.onClick as any)();
-    }
-  };
-
-  return (
-    <Wrapper>
-      <StyledInput type="text" onKeyDown={onKeyDown} {...inputProps} />
-      <StyledButton {...buttonProps}>{buttonProps?.children}</StyledButton>
-    </Wrapper>
-  );
-};
+const InputGroup: FC<InputGroupProps> = ({ inputProps, buttonProps }) => (
+  <div className="flex w-full gap-2">
+    <Input
+      {...inputProps}
+      className={cn(
+        "flex-1",
+        "bg-card text-card-foreground placeholder-muted-foreground",
+        inputProps.className
+      )}
+    />
+    <Button
+      size="icon"
+      {...buttonProps}
+      className={cn(
+        "shrink-0",
+        buttonProps.className
+      )}
+    />
+  </div>
+);
 
 export default InputGroup;
