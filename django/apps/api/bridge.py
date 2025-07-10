@@ -18,7 +18,7 @@ def bridge_ensure_auth(user):
 
     if not bridge_auth or bridge_auth.expires_at <= now():
         try:
-            url = f"{BRIDGE_URL}/{AUTH_ROUTE}/"
+            url = f"{BRIDGE_URL}/{AUTH_ROUTE}"
             response = requests.post(url, timeout=TIMEOUT)
             response.raise_for_status()
             data = response.json()
@@ -50,7 +50,7 @@ def bridge_start_convo(user):
         "Accept": "application/json"
     }
 
-    url = f"{BRIDGE_URL}/{AI_ROUTE}/{START_CONVO_ROUTE}/"
+    url = f"{BRIDGE_URL}/{AI_ROUTE}/{START_CONVO_ROUTE}"
     response = requests.get(url, headers=headers, timeout=TIMEOUT)
     response.raise_for_status()
 
@@ -71,11 +71,9 @@ def bridge_send_msg(user, convo_id, contents, follow_up_count):
     }
     payload = {"contents": contents}
 
-    url = f"{BRIDGE_URL}/{AI_ROUTE}/{convo_id}/"
+    url = f"{BRIDGE_URL}/{AI_ROUTE}/{convo_id}"
     if follow_up_count is not None:
-        url += f"?{FOLLOW_UP_COUNT_QUERY_PARAM}={follow_up_count}/"
-    else:
-        url += '/'
+        url += f"?{FOLLOW_UP_COUNT_QUERY_PARAM}={follow_up_count}"
 
     response = requests.post(url, headers=headers, json=payload, timeout=TIMEOUT)
     response.raise_for_status()
@@ -96,7 +94,7 @@ def bridge_get_convo_msgs(user, convo_id):
         "Accept": "application/json"
     }
 
-    url = f"{BRIDGE_URL}/{AI_ROUTE}/{convo_id}/"
+    url = f"{BRIDGE_URL}/{AI_ROUTE}/{convo_id}"
     response = requests.get(url, headers=headers, timeout=TIMEOUT)
     response.raise_for_status()
 
