@@ -36,7 +36,7 @@ p.sender-name {
 div.from-user {
     align-self: flex-end;
     background-color: rgb(36, 139, 245);
-    color: #000;
+    color: #fff;
 }
 
     div.from-user::before {
