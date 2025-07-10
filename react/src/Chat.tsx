@@ -6,6 +6,7 @@ import "./style/chat-style.css";
 export type MessageSender = "user" | "bot";
 
 export interface ChatMessage {
+  id: string;
   timestamp: string;
   message: string;
   sender: MessageSender;
