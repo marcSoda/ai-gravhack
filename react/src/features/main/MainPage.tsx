@@ -5,6 +5,7 @@ import showdown from "showdown";
 import { v4 as uuid } from "uuid";
 import axios from "../..//utils/axiosConfig";
 import AboutPage from "../../AboutPage";
+import HelpPage from "../../HelpPage";
 import Chat, { type ChatMessage, type MessageSender } from "../../Chat";
 import ChatInput from "../../ChatInput";
 import { Card, CardContent, CardFooter } from "../../components/ui/card";
@@ -99,6 +100,7 @@ export default function MainPage() {
     <Routes>
       <Route path="/about" element={<AboutPage />} />
       <Route path="/team" element={<TeamPage />} />
+      <Route path="/help" element={<HelpPage />} />
       <Route
         path="/"
         element={

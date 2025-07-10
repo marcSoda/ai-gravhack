@@ -1,4 +1,4 @@
-import { Home, Info, LogOut, UsersRound, type LucideIcon } from "lucide-react";
+import { HelpCircle, Home, Info, LogOut, UsersRound, type LucideIcon } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -57,8 +57,9 @@ const Sidenav: React.FC = () => {
 
   const navItems: NavItemProps[] = [
     { type: "link", to: "/", Icon: Home, title: "Home" },
-    { type: "link", to: "/about", Icon: Info, title: "About" },
     { type: "link", to: "/team", Icon: UsersRound, title: "Team" },
+    { type: "link", to: "/about", Icon: Info, title: "About" },
+    { type: "link", to: "/help", Icon: HelpCircle, title: "Help" },
   ];
 
   const bottomNavItems: NavItemProps[] = [
