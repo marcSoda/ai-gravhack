@@ -25,7 +25,10 @@ else:
 ALLOWED_HOSTS = [
     "https://shad-ai.gravic.com",
     "http://shad-ai.gravic.com",
+    "shad-ai.gravic.com",
     "http://10.0.1.69",
+    "https://10.0.1.69",
+    "10.0.1.69",
     "django-prod",
 ]
 
