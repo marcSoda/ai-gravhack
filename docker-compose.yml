@@ -37,7 +37,7 @@ services:
       dockerfile: nginx/Dockerfile
     volumes:
       - ./nginx:/working
-      - ./django/django/static:/static
+      - ./django/static:/static
       - ./react/dist:/var/www/react_dist
     ports:
       - "80:80"
